@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-16 10:34:26
+ * @LastEditTime: 2022-12-16 12:11:37
  * @FilePath: \src\packages\editor-block.tsx
  * @Description:
  */
@@ -10,8 +10,12 @@
 import { computed, defineComponent, PropType } from 'vue';
 import { IEditorBlock } from '../inter';
 import './editor-block.scss';
-
+import { ElButton, ElInput } from 'element-plus';
 export default defineComponent({
+  components: {
+    ElButton,
+    ElInput,
+  },
   props: {
     block: {
       type: Object as PropType<IEditorBlock>,
@@ -35,9 +39,11 @@ export default defineComponent({
       key === 'text' ? (
         <div class="editor-block" style={blockStyle.value}></div>
       ) : key === 'button' ? (
-        <button class="editor-block" style={blockStyle.value}></button>
+        <el-button class="editor-block" style={blockStyle.value}>
+          按钮
+        </el-button>
       ) : key === 'input' ? (
-        <input class="editor-block" style={blockStyle.value} />
+        <el-input class="editor-block" style={blockStyle.value} />
       ) : (
         ''
       );
