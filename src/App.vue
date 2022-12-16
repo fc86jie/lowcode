@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import Editor from './packages/editor';
+import { provide, ref } from 'vue';
+import Editor from '@/packages/editor';
 import data from './data.json';
+import { editorConfig } from '@/utils/editor-config';
+import { configKey } from './inter';
+
+provide(configKey, editorConfig);
+
 const state = ref(data);
 </script>
 

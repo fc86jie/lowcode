@@ -2,15 +2,16 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-16 12:11:37
+ * @LastEditTime: 2022-12-16 18:23:43
  * @FilePath: \src\packages\editor-block.tsx
  * @Description:
  */
 
-import { computed, defineComponent, PropType } from 'vue';
-import { IEditorBlock } from '../inter';
+import { computed, defineComponent, inject, PropType } from 'vue';
+import { IEditorBlock, IEditorConfig, configKey } from '../inter';
 import './editor-block.scss';
 import { ElButton, ElInput } from 'element-plus';
+
 export default defineComponent({
   components: {
     ElButton,
@@ -35,17 +36,16 @@ export default defineComponent({
       zIndex: block.zIndex,
     }));
 
-    return () =>
-      key === 'text' ? (
-        <div class="editor-block" style={blockStyle.value}></div>
-      ) : key === 'button' ? (
-        <el-button class="editor-block" style={blockStyle.value}>
-          按钮
-        </el-button>
-      ) : key === 'input' ? (
-        <el-input class="editor-block" style={blockStyle.value} />
-      ) : (
-        ''
+    const config = inject(configKey) as IEditorConfig;
+
+    return () => {
+      const component = config.componentMap[key];
+      const renderComponent = component.render();
+      return (
+        <div class="editor-block" style={blockStyle.value}>
+          {renderComponent}
+        </div>
       );
+    };
   },
 });

@@ -2,14 +2,14 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-16 10:33:29
+ * @LastEditTime: 2022-12-16 21:15:58
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
 
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, inject } from 'vue';
 import EditorBlock from './editor-block';
-import { IEditor } from '../inter';
+import { IEditor, configKey, IEditorConfig } from '@/inter';
 import './editor.scss';
 
 export default defineComponent({
@@ -33,9 +33,18 @@ export default defineComponent({
       height: `${data.value.container.height}px`,
     }));
 
+    const config = inject(configKey) as IEditorConfig;
+
     return () => (
       <div class="editor">
-        <div class="editor-left">左侧物料区</div>
+        <div class="editor-left">
+          {config.componentList.map(item => (
+            <div class="editor-left-item">
+              <span>{item.label}</span>
+              <div>{item.preview()}</div>
+            </div>
+          ))}
+        </div>
         <div class="editor-middle">
           <div class="editor-top">菜单栏</div>
           <div class="editor-container">

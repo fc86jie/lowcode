@@ -8,6 +8,40 @@
     background: red;
     flex-shrink: 0;
   }
+  &-left {
+    &-item {
+      position: relative;
+      box-sizing: border-box;
+      width: 250px;
+      min-height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      cursor: move;
+      user-select: none;
+      > span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 4px;
+        color: #fff;
+        background: cyan;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: #ccc;
+        opacity: 0.2;
+      }
+    }
+  }
   &-middle {
     position: relative;
     flex: 1;
