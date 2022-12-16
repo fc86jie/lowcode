@@ -1,0 +1,39 @@
+.editor {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  &-left,
+  &-right {
+    width: 270px;
+    background: red;
+    flex-shrink: 0;
+  }
+  &-middle {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+    margin: 0 10px;
+  }
+  &-top {
+    position: absolute;
+    width: 100%;
+    height: 80px;
+    background: blue;
+  }
+  &-container {
+    height: 100%;
+    padding-top: 80px;
+    box-sizing: border-box;
+    &-canvas {
+      height: 100%;
+      overflow: scroll;
+      &__content {
+        position: relative;
+        margin: 20px auto;
+        // width: 550px;
+        // height: 550px;
+        background: yellow;
+      }
+    }
+  }
+}
