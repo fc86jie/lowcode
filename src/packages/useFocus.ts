@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 14:37:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-18 19:56:58
+ * @LastEditTime: 2022-12-18 20:41:04
  * @FilePath: \src\packages\useFocus.ts
  * @Description: 获取被选中的block
  */
@@ -19,14 +19,19 @@ export function useFocus(data: WritableComputedRef<IEditor>, callback: Function)
     // 阻止input获取焦点
     e.preventDefault();
     e.stopPropagation();
-    if (block.focus) {
-      block.focus = false;
-    } else {
-      // 如果按住了shift说明是多选，否则清空其它的
-      if (!e.shiftKey) {
-        clearBlockFocus();
+
+    if (e.shiftKey) {
+      // 当只有一个节点选中时，不切换选中状态
+      if (focusData.value.focus.length <= 1) {
+        block.focus = true;
+      } else {
+        block.focus = !block.focus;
       }
-      block.focus = true;
+    } else {
+      if (!block.focus) {
+        clearBlockFocus();
+        block.focus = true;
+      }
     }
 
     callback(e);
