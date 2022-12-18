@@ -5,6 +5,7 @@ specifiers:
   '@vitejs/plugin-legacy': ^3.0.1
   '@vitejs/plugin-vue': ^4.0.0
   '@vitejs/plugin-vue-jsx': ^3.0.0
+  deepcopy: ^2.1.0
   element-plus: ^2.2.26
   sass: ^1.56.2
   typescript: ^4.9.3
@@ -15,6 +16,7 @@ specifiers:
   vue-tsc: ^1.0.11
 
 dependencies:
+  deepcopy: 2.1.0
   element-plus: 2.2.26_vue@3.2.45
   vue: 3.2.45
 
@@ -983,6 +985,12 @@ packages:
       ms: 2.1.2
     dev: true
 
+  /deepcopy/2.1.0:
+    resolution: {integrity: sha512-8cZeTb1ZKC3bdSCP6XOM1IsTczIO73fdqtwa2B0N15eAz7gmyhQo+mc5gnFuulsgN3vIQYmTgbmQVKalH1dKvQ==}
+    dependencies:
+      type-detect: 4.0.8
+    dev: false
+
   /electron-to-chromium/1.4.284:
     resolution: {integrity: sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==}
     dev: true
@@ -1431,6 +1439,11 @@ packages:
     dependencies:
       is-number: 7.0.0
     dev: true
+
+  /type-detect/4.0.8:
+    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
+    engines: {node: '>=4'}
+    dev: false
 
   /typescript/4.9.4:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
