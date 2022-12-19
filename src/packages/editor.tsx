@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-18 20:23:30
+ * @LastEditTime: 2022-12-19 15:23:44
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -48,18 +48,28 @@ export default defineComponent({
     const { dragStart, dragEnd } = useMenuDrag(data, containerRef);
 
     // 2、获取焦点，选中后可能直接拖拽
-    const { blockMousedown, clearBlockFocus, focusData } = useFocus(data, (e: MouseEvent) => {
+    const { blockMousedown, containerMousedown, focusData, lastSelectedBlock } = useFocus(data, (e: MouseEvent) => {
       mousedown(e);
     });
 
-    // 3、拖拽多个元素
-    const { mousedown } = useBlockDrag(focusData);
+    // 3、拖拽元素
+    const { mousedown, markLine } = useBlockDrag(focusData, lastSelectedBlock, data);
 
-    // 居中block
-    const onAlignCenter = (styleData: Pick<IEditorBlock, 'left' | 'top' | 'alignCenter'>, index: number) => {
+    // 更新block数据
+    const updateBlock: <T>(styleData: T, index: number) => void = (styleData, index) => {
       let { blocks } = data.value;
       blocks[index] = { ...blocks[index], ...styleData };
       data.value = { ...data.value, blocks: [...blocks] };
+    };
+
+    // 初始渲染居中block
+    const onAlignCenter = (styleData: Pick<IEditorBlock, 'left' | 'top' | 'alignCenter'>, index: number) => {
+      updateBlock(styleData, index);
+    };
+
+    // 渲染完成设置宽高
+    const onSetStyle = (styleData: Pick<IEditorBlock, 'width' | 'height'>, index: number) => {
+      updateBlock(styleData, index);
     };
 
     return () => (
@@ -82,7 +92,7 @@ export default defineComponent({
                 class="editor-container-canvas__content"
                 style={containerStyle.value}
                 ref={containerRef}
-                onMousedown={clearBlockFocus}
+                onMousedown={containerMousedown}
               >
                 {data.value.blocks.map((block, index) => (
                   // jsx绑定的事件名称前面加上on，事件名改为驼峰命名法并且首字母大写，拼接上前面的on即可绑定自定义事件
@@ -90,9 +100,14 @@ export default defineComponent({
                     class={block.focus ? 'block-editor-focus' : ''}
                     block={block}
                     onAlignCenter={data => onAlignCenter(data, index)}
-                    onMousedown={(e: MouseEvent) => blockMousedown(e, block)}
+                    onSetStyle={data => onSetStyle(data, index)}
+                    onMousedown={(e: MouseEvent) => blockMousedown(e, block, index)}
                   ></EditorBlock>
                 ))}
+                {/* 横向辅助线 */}
+                {markLine.y !== null && <div class="line-x" style={{ top: `${markLine.y}px` }}></div>}
+                {/* 纵向辅助线 */}
+                {markLine.x !== null && <div class="line-y" style={{ left: `${markLine.x}px` }}></div>}
               </div>
             </div>
           </div>

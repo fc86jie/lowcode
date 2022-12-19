@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-18 14:07:03
+ * @LastEditTime: 2022-12-19 11:51:49
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -17,6 +17,8 @@ export interface IEditorBlock {
   key: string;
   alignCenter?: boolean;
   focus?: boolean;
+  width?: number;
+  height?: number;
 }
 
 // 编辑器配置文件接口定义
