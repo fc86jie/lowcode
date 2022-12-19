@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 14:37:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 12:22:17
+ * @LastEditTime: 2022-12-19 16:27:01
  * @FilePath: \src\packages\useFocus.ts
  * @Description: 获取被选中的block
  */
@@ -11,12 +11,13 @@ import { IEditor, IEditorBlock } from '@/inter';
 import { computed, ref, WritableComputedRef } from 'vue';
 
 export function useFocus(data: WritableComputedRef<IEditor>, callback: Function) {
-  // 最后选中的索引
-  let lastSelectedIndex = ref<number>(-1);
+  // 选中的索引列表，选中push进去，反选shift掉
+  let selectedIndex = ref<Array<number>>([]);
   // 最后选中的block
   let lastSelectedBlock = computed(() => {
-    let index = lastSelectedIndex.value;
-    return index >= 0 ? data.value.blocks[index] : null;
+    let list = selectedIndex.value;
+    let len = list.length;
+    return len > 0 ? data.value.blocks[list[len - 1]] : null;
   });
   // 清除所有焦点
   const clearBlockFocus = () => {
@@ -25,7 +26,7 @@ export function useFocus(data: WritableComputedRef<IEditor>, callback: Function)
   // 点击容器
   const containerMousedown = () => {
     clearBlockFocus();
-    lastSelectedIndex.value = -1;
+    selectedIndex.value = [];
   };
   const blockMousedown = (e: MouseEvent, block: IEditorBlock, index: number) => {
     // 阻止input获取焦点
@@ -47,8 +48,12 @@ export function useFocus(data: WritableComputedRef<IEditor>, callback: Function)
     }
 
     // 记录最后选中的block索引
+    let idx = selectedIndex.value.indexOf(index);
     if (block.focus) {
-      lastSelectedIndex.value = index;
+      selectedIndex.value.push(index);
+    } else {
+      // 可能是按住shift之后的二次点击，这时候要移除掉
+      selectedIndex.value.splice(idx, 1);
     }
 
     callback(e);

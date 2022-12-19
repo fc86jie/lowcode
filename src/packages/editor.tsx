@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 15:23:44
+ * @LastEditTime: 2022-12-19 16:55:07
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -10,7 +10,8 @@
 import { computed, defineComponent, PropType, inject, ref } from 'vue';
 import deepCopy from 'deepcopy';
 import EditorBlock from './editor-block';
-import { IEditor, configKey, IEditorConfig, IComponent, IEditorBlock } from '@/inter';
+import EditorMenu from './editor-menu';
+import { IEditor, configKey, IEditorConfig, IEditorBlock } from '@/inter';
 import './editor.scss';
 import { useMenuDrag } from './useMenuDrag';
 import { useFocus } from './useFocus';
@@ -83,7 +84,9 @@ export default defineComponent({
           ))}
         </div>
         <div class="editor-middle">
-          <div class="editor-top">菜单栏</div>
+          <div class="editor-top">
+            <EditorMenu></EditorMenu>
+          </div>
           <div class="editor-container">
             {/* 滚动条 */}
             <div class="editor-container-canvas">
