@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 14:37:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 16:27:01
+ * @LastEditTime: 2022-12-24 23:08:39
  * @FilePath: \src\packages\useFocus.ts
  * @Description: 获取被选中的block
  */
@@ -10,7 +10,7 @@
 import { IEditor, IEditorBlock } from '@/inter';
 import { computed, ref, WritableComputedRef } from 'vue';
 
-export function useFocus(data: WritableComputedRef<IEditor>, callback: Function) {
+export function useFocus(data: WritableComputedRef<IEditor>, callback: (e: MouseEvent) => void) {
   // 选中的索引列表，选中push进去，反选shift掉
   let selectedIndex = ref<Array<number>>([]);
   // 最后选中的block

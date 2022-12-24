@@ -2,43 +2,39 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-19 16:52:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 17:17:24
+ * @LastEditTime: 2022-12-24 22:39:47
  * @FilePath: \src\packages\editor-menu.tsx
  * @Description:
  */
 
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { ElIcon, ElButton } from 'element-plus';
-import { RefreshLeft, Refresh } from '@element-plus/icons-vue';
+import { RefreshLeft, RefreshRight } from '@element-plus/icons-vue';
+import { useCommand } from './useCommand';
+import { IEditor } from '@/inter';
 
 export default defineComponent({
   components: {
     ElIcon,
     ElButton,
     RefreshLeft,
-    Refresh,
+    RefreshRight,
   },
-  // props: {
-  // block: {
-  //   type: Object as PropType<IEditorBlock>,
-  //   required: true,
-  // },
-  // },
-  emits: [],
   setup(props, { emit }) {
+    const { commands } = useCommand();
     const buttons = [
       {
         label: '撤销',
         icon: <RefreshLeft />,
         handler: () => {
-          console.log('撤销');
+          commands.undo();
         },
       },
       {
         label: '重做',
-        icon: <Refresh />,
+        icon: <RefreshRight />,
         handler: () => {
-          console.log('重做');
+          commands.redo();
         },
       },
     ];

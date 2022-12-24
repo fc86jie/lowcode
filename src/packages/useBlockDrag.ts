@@ -2,13 +2,15 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 20:14:00
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 15:35:19
+ * @LastEditTime: 2022-12-24 23:29:31
  * @FilePath: \src\packages\useBlockDrag.ts
  * @Description:
  */
 
 import { ComputedRef, reactive, WritableComputedRef } from 'vue';
 import { IEditor, IEditorBlock } from '@/inter';
+import { menuItemEmits } from 'element-plus';
+import { emitter } from './events';
 
 export function useBlockDrag(
   focusData: ComputedRef<{
@@ -28,6 +30,7 @@ export function useBlockDrag(
       x: Array<{ showLeft: number; left: number }>;
       y: Array<{ showTop: number; top: number }>;
     };
+    dragging: boolean; // 是否是拖拽
   };
 
   let dragState: dragStateType = {
@@ -40,6 +43,7 @@ export function useBlockDrag(
       x: [],
       y: [],
     },
+    dragging: false,
   };
 
   interface IMarkLine {
@@ -127,11 +131,17 @@ export function useBlockDrag(
 
         return lines;
       })(),
+      dragging: false,
     };
     document.addEventListener('mousemove', mousemove);
     document.addEventListener('mouseup', mouseup);
   };
   const mousemove = (e: MouseEvent) => {
+    if (!dragState.dragging) {
+      dragState.dragging = true;
+      emitter.emit('start');
+    }
+
     let { clientX: moveX, clientY: moveY } = e;
     // 记录辅助线要展示的位置
     let x: number | null = null;
@@ -177,6 +187,10 @@ export function useBlockDrag(
     document.removeEventListener('mouseup', mouseup);
     markLine.x = null;
     markLine.y = null;
+    if (dragState.dragging) {
+      dragState.dragging = false;
+      emitter.emit('end');
+    }
   };
 
   return {

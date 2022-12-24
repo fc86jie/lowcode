@@ -12,6 +12,7 @@
     "@element-plus/icons-vue": "^2.0.10",
     "deepcopy": "^2.1.0",
     "element-plus": "^2.2.26",
+    "mitt": "^3.0.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {

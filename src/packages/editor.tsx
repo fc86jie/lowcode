@@ -2,16 +2,16 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 16:55:07
+ * @LastEditTime: 2022-12-24 22:46:20
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
 
-import { computed, defineComponent, PropType, inject, ref } from 'vue';
-import deepCopy from 'deepcopy';
+import { computed, defineComponent, PropType, inject, ref, provide } from 'vue';
+import deepcopy from 'deepcopy';
 import EditorBlock from './editor-block';
 import EditorMenu from './editor-menu';
-import { IEditor, configKey, IEditorConfig, IEditorBlock } from '@/inter';
+import { IEditor, configKey, IEditorConfig, IEditorBlock, editorKey } from '@/inter';
 import './editor.scss';
 import { useMenuDrag } from './useMenuDrag';
 import { useFocus } from './useFocus';
@@ -31,7 +31,7 @@ export default defineComponent({
         return props.modelValue;
       },
       set(newValue) {
-        emit('update:modelValue', deepCopy(newValue));
+        emit('update:modelValue', deepcopy(newValue));
       },
     });
 
@@ -72,6 +72,16 @@ export default defineComponent({
     const onSetStyle = (styleData: Pick<IEditorBlock, 'width' | 'height'>, index: number) => {
       updateBlock(styleData, index);
     };
+
+    // 注入数据
+    provide(editorKey, {
+      getData() {
+        return data.value;
+      },
+      setData(blocks: Array<IEditorBlock>) {
+        data.value = { ...data.value, blocks };
+      },
+    });
 
     return () => (
       <div class="editor">

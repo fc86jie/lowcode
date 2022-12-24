@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 11:51:49
+ * @LastEditTime: 2022-12-24 23:19:14
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -35,13 +35,19 @@ export interface IEditor {
 export interface IComponent {
   key: string;
   label: string;
-  preview: Function;
-  render: Function;
+  preview: () => JSX.Element | string;
+  render: () => JSX.Element | string;
 }
 export interface IEditorConfig {
   componentList: Array<IComponent>;
   componentMap: { [key: string]: IComponent };
-  registry: Function;
+  registry: (component: IComponent) => void;
+}
+
+export interface IChangeEditorData {
+  getData: () => IEditor;
+  setData: (blocks: Array<IEditorBlock>) => void;
 }
 
 export const configKey = Symbol('editor-config') as InjectionKey<IEditorConfig>;
+export const editorKey = Symbol('editor-data') as InjectionKey<IChangeEditorData>;

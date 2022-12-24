@@ -2,13 +2,14 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-17 23:37:55
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-17 23:51:28
+ * @LastEditTime: 2022-12-24 16:09:05
  * @FilePath: \src\packages\useMenuDrag.ts
  * @Description: 菜单拖拽
  */
 
 import { IComponent, IEditor } from '@/inter';
 import { Ref, WritableComputedRef } from 'vue';
+import { emitter } from './events';
 
 export function useMenuDrag(data: WritableComputedRef<IEditor>, containerRef: Ref<HTMLDivElement | null>) {
   let curComp: IComponent | null = null;
@@ -48,6 +49,7 @@ export function useMenuDrag(data: WritableComputedRef<IEditor>, containerRef: Re
     containerRef.value?.addEventListener('dragleave', dragLeave);
     containerRef.value?.addEventListener('drop', drop);
     curComp = component;
+    emitter.emit('start');
   };
 
   const dragEnd = () => {
@@ -56,6 +58,7 @@ export function useMenuDrag(data: WritableComputedRef<IEditor>, containerRef: Re
     containerRef.value?.removeEventListener('dragleave', dragLeave);
     containerRef.value?.removeEventListener('drop', drop);
     curComp = null;
+    emitter.emit('end');
   };
 
   return {

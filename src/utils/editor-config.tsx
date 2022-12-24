@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-16 20:59:12
+ * @LastEditTime: 2022-12-24 23:17:33
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
