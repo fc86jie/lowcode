@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-19 10:47:01
+ * @LastEditTime: 2022-12-26 19:37:20
  * @FilePath: \src\packages\editor-block.tsx
  * @Description:
  */
@@ -13,10 +13,6 @@ import './editor-block.scss';
 import { ElButton, ElInput } from 'element-plus';
 
 export default defineComponent({
-  components: {
-    ElButton,
-    ElInput,
-  },
   props: {
     block: {
       type: Object as PropType<IEditorBlock>,
