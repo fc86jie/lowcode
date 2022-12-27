@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-26 19:37:20
+ * @LastEditTime: 2022-12-27 20:30:11
  * @FilePath: \src\packages\editor-block.tsx
  * @Description:
  */
@@ -10,7 +10,6 @@
 import { computed, defineComponent, inject, onMounted, PropType, ref } from 'vue';
 import { IEditorBlock, IEditorConfig, configKey } from '../inter';
 import './editor-block.scss';
-import { ElButton, ElInput } from 'element-plus';
 
 export default defineComponent({
   props: {

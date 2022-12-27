@@ -1,6 +1,6 @@
 import { onUnmounted, inject } from 'vue';
 import deepcopy from 'deepcopy';
-import { IEditor, editorKey, IChangeEditorData, IEditorBlock } from '@/inter';
+import { IEditor, editorKey, IChangeEditorData, IEditorBlock, focusKey, IFocusData } from '@/inter';
 import { emitter } from './events';
 
 export function useCommand() {
@@ -56,6 +56,7 @@ export function useCommand() {
   };
 
   let { getData, setBlockData, setData } = inject(editorKey) as IChangeEditorData;
+  let { getFocusData } = inject(focusKey) as IFocusData;
 
   // 注册需要的命令
   // 下一步
@@ -144,6 +145,91 @@ export function useCommand() {
         },
         undo() {
           setData(before);
+        },
+      };
+    },
+  });
+
+  // 置顶
+  registry({
+    name: 'placeTop',
+    pushQueue: true,
+    execute() {
+      let { blocks } = getData();
+      let before = deepcopy(blocks);
+      let after = (() => {
+        let { focus, unFocus } = getFocusData();
+        let maxZIndex = unFocus.reduce((prev, { zIndex }) => {
+          return Math.max(prev, zIndex);
+        }, -Infinity);
+
+        focus.forEach(block => (block.zIndex = maxZIndex + 1));
+
+        return getData().blocks;
+      })();
+      return {
+        redo() {
+          setBlockData(after);
+        },
+        undo() {
+          setBlockData(before);
+        },
+      };
+    },
+  });
+
+  // 置底
+  registry({
+    name: 'placeBottom',
+    pushQueue: true,
+    execute() {
+      let { blocks } = getData();
+      let before = deepcopy(blocks);
+      let after = (() => {
+        let { focus, unFocus } = getFocusData();
+        let minZIndex =
+          unFocus.reduce((prev, { zIndex }) => {
+            return Math.min(prev, zIndex);
+          }, Infinity) - 1;
+
+        // 负的直接赋值会导致元素被放置到容器的下面，导致不可见。让unFocus的zIndex增加，focus的zIndex为0即可
+        if (minZIndex < 0) {
+          const dur = Math.abs(minZIndex);
+          minZIndex = 0;
+          unFocus.forEach(block => (block.zIndex += dur));
+        }
+
+        focus.forEach(block => (block.zIndex = minZIndex));
+
+        return getData().blocks;
+      })();
+      return {
+        redo() {
+          setBlockData(after);
+        },
+        undo() {
+          setBlockData(before);
+        },
+      };
+    },
+  });
+
+  // 删除
+  registry({
+    name: 'del',
+    pushQueue: true,
+    execute() {
+      let { blocks } = getData();
+      let { unFocus } = getFocusData();
+      let before = deepcopy(blocks);
+      let after = unFocus;
+
+      return {
+        redo() {
+          setBlockData(after);
+        },
+        undo() {
+          setBlockData(before);
         },
       };
     },

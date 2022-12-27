@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 11:43:46
+ * @LastEditTime: 2022-12-27 19:19:22
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -50,5 +50,13 @@ export interface IChangeEditorData {
   setData: (data: IEditor) => void;
 }
 
+export interface IFocusData {
+  getFocusData: () => {
+    focus: Array<IEditorBlock>;
+    unFocus: Array<IEditorBlock>;
+  };
+}
+
 export const configKey = Symbol('editor-config') as InjectionKey<IEditorConfig>;
 export const editorKey = Symbol('editor-data') as InjectionKey<IChangeEditorData>;
+export const focusKey = Symbol('focus-data') as InjectionKey<IFocusData>;

@@ -12,4 +12,7 @@
   &.block-editor-focus::after {
     border: dashed 2px red;
   }
+  &.editor-block-preview::after {
+    display: none;
+  }
 }

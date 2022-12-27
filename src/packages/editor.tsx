@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 11:42:46
+ * @LastEditTime: 2022-12-27 20:35:12
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -11,7 +11,7 @@ import { computed, defineComponent, PropType, inject, ref, provide } from 'vue';
 import deepcopy from 'deepcopy';
 import EditorBlock from './editor-block';
 import EditorMenu from './editor-menu';
-import { IEditor, configKey, IEditorConfig, IEditorBlock, editorKey } from '@/inter';
+import { IEditor, configKey, IEditorConfig, IEditorBlock, editorKey, focusKey } from '@/inter';
 import './editor.scss';
 import { useMenuDrag } from './useMenuDrag';
 import { useFocus } from './useFocus';
@@ -26,6 +26,9 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
+    // 是否处于预览状态
+    let previewRef = ref(false);
+
     const data = computed({
       get() {
         return props.modelValue;
@@ -49,9 +52,13 @@ export default defineComponent({
     const { dragStart, dragEnd } = useMenuDrag(data, containerRef);
 
     // 2、获取焦点，选中后可能直接拖拽
-    const { blockMousedown, containerMousedown, focusData, lastSelectedBlock } = useFocus(data, (e: MouseEvent) => {
-      mousedown(e);
-    });
+    const { blockMousedown, containerMousedown, focusData, lastSelectedBlock, clearBlockFocus } = useFocus(
+      data,
+      previewRef,
+      (e: MouseEvent) => {
+        mousedown(e);
+      }
+    );
 
     // 3、拖拽元素
     const { mousedown, markLine } = useBlockDrag(focusData, lastSelectedBlock, data);
@@ -73,6 +80,12 @@ export default defineComponent({
       updateBlock(styleData, index);
     };
 
+    const onSetPreview = (preview: boolean) => {
+      previewRef.value = preview;
+      // 清除辅助线
+      clearBlockFocus();
+    };
+
     // 注入数据
     provide(editorKey, {
       getData() {
@@ -83,6 +96,12 @@ export default defineComponent({
       },
       setData(newData: IEditor) {
         data.value = { ...newData };
+      },
+    });
+
+    provide(focusKey, {
+      getFocusData() {
+        return focusData.value;
       },
     });
 
@@ -98,7 +117,7 @@ export default defineComponent({
         </div>
         <div class="editor-middle">
           <div class="editor-top">
-            <EditorMenu></EditorMenu>
+            <EditorMenu preview={previewRef.value} onSetPreview={onSetPreview}></EditorMenu>
           </div>
           <div class="editor-container">
             {/* 滚动条 */}
@@ -113,7 +132,7 @@ export default defineComponent({
                 {data.value.blocks.map((block, index) => (
                   // jsx绑定的事件名称前面加上on，事件名改为驼峰命名法并且首字母大写，拼接上前面的on即可绑定自定义事件
                   <EditorBlock
-                    class={block.focus ? 'block-editor-focus' : ''}
+                    class={[block.focus ? 'block-editor-focus' : '', previewRef ? 'block-editor-preview' : '']}
                     block={block}
                     onAlignCenter={data => onAlignCenter(data, index)}
                     onSetStyle={data => onSetStyle(data, index)}
