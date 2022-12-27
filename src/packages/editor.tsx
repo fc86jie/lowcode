@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-24 22:46:20
+ * @LastEditTime: 2022-12-27 11:42:46
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -78,8 +78,11 @@ export default defineComponent({
       getData() {
         return data.value;
       },
-      setData(blocks: Array<IEditorBlock>) {
+      setBlockData(blocks: Array<IEditorBlock>) {
         data.value = { ...data.value, blocks };
+      },
+      setData(newData: IEditor) {
+        data.value = { ...newData };
       },
     });
 

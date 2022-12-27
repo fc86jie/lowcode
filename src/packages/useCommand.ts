@@ -9,7 +9,7 @@ export function useCommand() {
     pushQueue?: boolean; // 是否要放入队列中
     keyboard?: string; // 快捷键
     init?: () => () => void; // 初始化
-    execute: () => { redo: () => void; undo?: () => void };
+    execute: (data?: any[]) => { redo: () => void; undo?: () => void };
     before?: null | object;
   }
 
@@ -17,7 +17,7 @@ export function useCommand() {
     current: number;
     queue: Array<{ redo: () => void; undo: () => void }>;
     commands: {
-      [key: string]: () => void;
+      [key: string]: (...rest: any[]) => void;
     };
     commandList: Array<ICommand>;
     destroyList: Array<() => void>;
@@ -33,8 +33,8 @@ export function useCommand() {
 
   const registry = (command: ICommand) => {
     state.commandList.push(command);
-    state.commands[command.name] = () => {
-      const { redo, undo } = command.execute();
+    state.commands[command.name] = (...args: any[]) => {
+      const { redo, undo } = command.execute(...args);
       redo();
       if (!command.pushQueue) {
         return;
@@ -55,7 +55,7 @@ export function useCommand() {
     };
   };
 
-  let { getData, setData } = inject(editorKey) as IChangeEditorData;
+  let { getData, setBlockData, setData } = inject(editorKey) as IChangeEditorData;
 
   // 注册需要的命令
   // 下一步
@@ -122,10 +122,28 @@ export function useCommand() {
       let after = blocks;
       return {
         redo() {
-          setData(after);
+          setBlockData(after);
         },
         undo() {
-          setData(before as Array<IEditorBlock>);
+          setBlockData(before as Array<IEditorBlock>);
+        },
+      };
+    },
+  });
+
+  // 导入后可回退
+  registry({
+    name: 'updateContainer',
+    pushQueue: true,
+    execute(newVal) {
+      let before = getData();
+      let after = newVal;
+      return {
+        redo() {
+          setData(after as unknown as IEditor);
+        },
+        undo() {
+          setData(before);
         },
       };
     },

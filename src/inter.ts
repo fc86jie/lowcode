@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-24 23:19:14
+ * @LastEditTime: 2022-12-27 11:43:46
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -46,7 +46,8 @@ export interface IEditorConfig {
 
 export interface IChangeEditorData {
   getData: () => IEditor;
-  setData: (blocks: Array<IEditorBlock>) => void;
+  setBlockData: (blocks: Array<IEditorBlock>) => void;
+  setData: (data: IEditor) => void;
 }
 
 export const configKey = Symbol('editor-config') as InjectionKey<IEditorConfig>;
