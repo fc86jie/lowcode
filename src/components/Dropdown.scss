@@ -1,0 +1,20 @@
+.dropdown {
+  display: none;
+  position: absolute;
+  background: #fff;
+  box-shadow: 2px 2px #ccc;
+  z-index: 999999;
+}
+
+.dropdown-isShow {
+  display: block;
+}
+
+.dropdown-item {
+  width: 100px;
+  line-height: 30px;
+  border: solid 1px #ccc;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+}

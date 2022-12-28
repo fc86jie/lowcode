@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-24 23:17:33
+ * @LastEditTime: 2022-12-28 20:13:17
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
@@ -30,6 +30,34 @@ editorConfig.registry({
   label: '文本',
   preview: () => '文本预览',
   render: () => '文本渲染',
+  props: {
+    text: {
+      type: 'input',
+      label: '文本内容',
+    },
+    color: {
+      type: 'color',
+      label: '字体颜色',
+    },
+    size: {
+      type: 'select',
+      label: '字体大小',
+      options: [
+        {
+          label: '14px',
+          value: '14px',
+        },
+        {
+          label: '20px',
+          value: '20px',
+        },
+        {
+          label: '24px',
+          value: '24px',
+        },
+      ],
+    },
+  },
 });
 
 editorConfig.registry({
@@ -37,6 +65,60 @@ editorConfig.registry({
   label: '按钮',
   preview: () => <ElButton>按钮预览</ElButton>,
   render: () => <ElButton>按钮渲染</ElButton>,
+  props: {
+    text: {
+      type: 'input',
+      label: '按钮内容',
+    },
+    type: {
+      type: 'select',
+      label: '按钮类型',
+      options: [
+        {
+          label: '基础',
+          value: 'primary',
+        },
+        {
+          label: '成功',
+          value: 'success',
+        },
+        {
+          label: '警告',
+          value: 'warning',
+        },
+        {
+          label: '危险',
+          value: 'danger',
+        },
+        {
+          label: '文本',
+          value: 'text',
+        },
+      ],
+    },
+    size: {
+      type: 'select',
+      label: '按钮尺寸',
+      options: [
+        {
+          label: '默认',
+          value: '',
+        },
+        {
+          label: '中等',
+          value: 'medium',
+        },
+        {
+          label: '小',
+          value: 'small',
+        },
+        {
+          label: '极小',
+          value: 'min',
+        },
+      ],
+    },
+  },
 });
 
 editorConfig.registry({
@@ -44,4 +126,5 @@ editorConfig.registry({
   label: '输入框',
   preview: () => <ElInput placeholder="输入框预览" />,
   render: () => <ElInput placeholder="输入框渲染" />,
+  props: {},
 });

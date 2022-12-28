@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-19 16:52:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 10:28:28
+ * @LastEditTime: 2022-12-28 18:23:00
  * @FilePath: \src\packages\editor-menu.tsx
  * @Description:
  */
@@ -22,7 +22,7 @@ import {
   Close,
 } from '@element-plus/icons-vue';
 import { useCommand } from './useCommand';
-import { $dialog } from '@/components/dialog';
+import { $dialog } from '@/components/Dialog';
 import { editorKey, IChangeEditorData } from '@/inter';
 
 export default defineComponent({

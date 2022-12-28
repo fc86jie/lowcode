@@ -2,8 +2,8 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-27 12:05:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 13:54:30
- * @FilePath: \src\components\dialog.tsx
+ * @LastEditTime: 2022-12-28 10:45:00
+ * @FilePath: \src\components\Dialog.tsx
  * @Description:
  */
 

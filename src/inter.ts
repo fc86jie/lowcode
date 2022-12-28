@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 19:19:22
+ * @LastEditTime: 2022-12-28 20:14:01
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -37,6 +37,22 @@ export interface IComponent {
   label: string;
   preview: () => JSX.Element | string;
   render: () => JSX.Element | string;
+  props: {
+    text?: {
+      type: 'input';
+      label: string;
+    };
+    type?: {};
+    size?: {
+      type: 'select';
+      label: string;
+      options: Array<{ label: string; value: string }>;
+    };
+    color?: {
+      type: 'color';
+      label: string;
+    };
+  };
 }
 export interface IEditorConfig {
   componentList: Array<IComponent>;

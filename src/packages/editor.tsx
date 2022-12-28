@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 10:33:03
+ * @LastEditTime: 2022-12-28 19:44:31
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -144,7 +144,7 @@ export default defineComponent({
                   {data.value.blocks.map((block, index) => (
                     // jsx绑定的事件名称前面加上on，事件名改为驼峰命名法并且首字母大写，拼接上前面的on即可绑定自定义事件
                     <EditorBlock
-                      class={[block.focus ? 'editor-block-focus' : '', previewRef ? 'editor-block-preview' : '']}
+                      class={[block.focus ? 'editor-block-focus' : '', previewRef.value ? 'editor-block-preview' : '']}
                       block={block}
                       onAlignCenter={data => onAlignCenter(data, index)}
                       onSetStyle={data => onSetStyle(data, index)}

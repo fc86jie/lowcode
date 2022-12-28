@@ -9,7 +9,7 @@ export function useCommand() {
     pushQueue?: boolean; // 是否要放入队列中
     keyboard?: string; // 快捷键
     init?: () => () => void; // 初始化
-    execute: (data?: any[]) => { redo: () => void; undo?: () => void };
+    execute: (...data: any) => { redo: () => void; undo?: () => void };
     before?: null | object;
   }
 
@@ -224,6 +224,32 @@ export function useCommand() {
       let before = deepcopy(blocks);
       let after = unFocus;
 
+      return {
+        redo() {
+          setBlockData(after);
+        },
+        undo() {
+          setBlockData(before);
+        },
+      };
+    },
+  });
+
+  // 更新block
+  registry({
+    name: 'updateBlock',
+    pushQueue: true,
+    execute(newBlock: IEditorBlock, oldBlock: IEditorBlock) {
+      let { blocks } = getData();
+      let before = blocks;
+      let after = (() => {
+        let newBlocks: Array<IEditorBlock> = [...blocks];
+        const index = newBlocks.indexOf(oldBlock);
+        if (index > -1) {
+          newBlocks.splice(index, 1, newBlock);
+        }
+        return newBlocks;
+      })();
       return {
         redo() {
           setBlockData(after);
