@@ -2,12 +2,13 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 20:35:12
+ * @LastEditTime: 2022-12-28 10:33:03
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
 
 import { computed, defineComponent, PropType, inject, ref, provide } from 'vue';
+import { ElButton } from 'element-plus';
 import deepcopy from 'deepcopy';
 import EditorBlock from './editor-block';
 import EditorMenu from './editor-menu';
@@ -28,6 +29,8 @@ export default defineComponent({
   setup(props, { emit }) {
     // 是否处于预览状态
     let previewRef = ref(false);
+    // 是否处于编辑状态
+    let editorRef = ref(true);
 
     const data = computed({
       get() {
@@ -80,8 +83,16 @@ export default defineComponent({
       updateBlock(styleData, index);
     };
 
+    // 设置是否预览
     const onSetPreview = (preview: boolean) => {
       previewRef.value = preview;
+      // 清除辅助线
+      clearBlockFocus();
+    };
+
+    // 设置是否编辑
+    const onSetEditor = (state: boolean) => {
+      editorRef.value = state;
       // 清除辅助线
       clearBlockFocus();
     };
@@ -105,50 +116,64 @@ export default defineComponent({
       },
     });
 
-    return () => (
-      <div class="editor">
-        <div class="editor-left">
-          {config.componentList.map(item => (
-            <div draggable class="editor-left-item" onDragstart={e => dragStart(e, item)} onDragend={dragEnd}>
-              <span>{item.label}</span>
-              <div>{item.preview()}</div>
-            </div>
-          ))}
-        </div>
-        <div class="editor-middle">
-          <div class="editor-top">
-            <EditorMenu preview={previewRef.value} onSetPreview={onSetPreview}></EditorMenu>
+    return () =>
+      editorRef.value ? (
+        <div class="editor">
+          <div class="editor-left">
+            {config.componentList.map(item => (
+              <div draggable class="editor-left-item" onDragstart={e => dragStart(e, item)} onDragend={dragEnd}>
+                <span>{item.label}</span>
+                <div>{item.preview()}</div>
+              </div>
+            ))}
           </div>
-          <div class="editor-container">
-            {/* 滚动条 */}
-            <div class="editor-container-canvas">
-              {/* 内容区 */}
-              <div
-                class="editor-container-canvas__content"
-                style={containerStyle.value}
-                ref={containerRef}
-                onMousedown={containerMousedown}
-              >
-                {data.value.blocks.map((block, index) => (
-                  // jsx绑定的事件名称前面加上on，事件名改为驼峰命名法并且首字母大写，拼接上前面的on即可绑定自定义事件
-                  <EditorBlock
-                    class={[block.focus ? 'block-editor-focus' : '', previewRef ? 'block-editor-preview' : '']}
-                    block={block}
-                    onAlignCenter={data => onAlignCenter(data, index)}
-                    onSetStyle={data => onSetStyle(data, index)}
-                    onMousedown={(e: MouseEvent) => blockMousedown(e, block, index)}
-                  ></EditorBlock>
-                ))}
-                {/* 横向辅助线 */}
-                {markLine.y !== null && <div class="line-x" style={{ top: `${markLine.y}px` }}></div>}
-                {/* 纵向辅助线 */}
-                {markLine.x !== null && <div class="line-y" style={{ left: `${markLine.x}px` }}></div>}
+          <div class="editor-middle">
+            <div class="editor-top">
+              <EditorMenu preview={previewRef.value} onSetPreview={onSetPreview} onSetEditor={onSetEditor}></EditorMenu>
+            </div>
+            <div class="editor-container">
+              {/* 滚动条 */}
+              <div class="editor-container-canvas">
+                {/* 内容区 */}
+                <div
+                  class="editor-container-canvas__content"
+                  style={containerStyle.value}
+                  ref={containerRef}
+                  onMousedown={containerMousedown}
+                >
+                  {data.value.blocks.map((block, index) => (
+                    // jsx绑定的事件名称前面加上on，事件名改为驼峰命名法并且首字母大写，拼接上前面的on即可绑定自定义事件
+                    <EditorBlock
+                      class={[block.focus ? 'editor-block-focus' : '', previewRef ? 'editor-block-preview' : '']}
+                      block={block}
+                      onAlignCenter={data => onAlignCenter(data, index)}
+                      onSetStyle={data => onSetStyle(data, index)}
+                      onMousedown={(e: MouseEvent) => blockMousedown(e, block, index)}
+                    ></EditorBlock>
+                  ))}
+                  {/* 横向辅助线 */}
+                  {markLine.y !== null && <div class="line-x" style={{ top: `${markLine.y}px` }}></div>}
+                  {/* 纵向辅助线 */}
+                  {markLine.x !== null && <div class="line-y" style={{ left: `${markLine.x}px` }}></div>}
+                </div>
               </div>
             </div>
           </div>
+          <div class="editor-right">属性控制栏</div>
         </div>
-        <div class="editor-right">属性控制栏</div>
-      </div>
-    );
+      ) : (
+        <>
+          <div class="editor-container-canvas__content" style={containerStyle.value}>
+            {data.value.blocks.map((block, index) => (
+              <EditorBlock class="editor-block-preview" block={block}></EditorBlock>
+            ))}
+          </div>
+          <div>
+            <ElButton type="primary" onClick={() => onSetEditor(true)}>
+              继续编辑
+            </ElButton>
+          </div>
+        </>
+      );
   },
 });

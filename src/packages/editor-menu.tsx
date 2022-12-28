@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-19 16:52:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-27 20:27:21
+ * @LastEditTime: 2022-12-28 10:28:28
  * @FilePath: \src\packages\editor-menu.tsx
  * @Description:
  */
@@ -19,6 +19,7 @@ import {
   Delete,
   Edit,
   Promotion,
+  Close,
 } from '@element-plus/icons-vue';
 import { useCommand } from './useCommand';
 import { $dialog } from '@/components/dialog';
@@ -31,7 +32,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['setPreview'],
+  emits: ['setPreview', 'setEditor'],
   setup(props, { emit }) {
     let { getData } = inject(editorKey) as IChangeEditorData;
     const { commands } = useCommand();
@@ -101,6 +102,13 @@ export default defineComponent({
         icon: () => (props.preview ? <Edit /> : <Promotion />),
         handler: () => {
           emit('setPreview', !props.preview);
+        },
+      },
+      {
+        label: '关闭',
+        icon: <Close />,
+        handler: () => {
+          emit('setEditor', false);
         },
       },
     ];

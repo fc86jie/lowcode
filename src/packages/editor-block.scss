@@ -9,7 +9,7 @@
     bottom: 0;
   }
 
-  &.block-editor-focus::after {
+  &.editor-block-focus::after {
     border: dashed 2px red;
   }
   &.editor-block-preview::after {
