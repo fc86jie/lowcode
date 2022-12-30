@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 19:44:31
+ * @LastEditTime: 2022-12-29 12:07:25
  * @FilePath: \src\packages\editor.tsx
  * @Description:
  */
@@ -10,10 +10,11 @@
 import { computed, defineComponent, PropType, inject, ref, provide } from 'vue';
 import { ElButton } from 'element-plus';
 import deepcopy from 'deepcopy';
-import EditorBlock from './editor-block';
-import EditorMenu from './editor-menu';
+import EditorBlock from './EditorBlock';
+import EditorMenu from './EditorMenu';
+import EditorOperator from './EditorOperator';
 import { IEditor, configKey, IEditorConfig, IEditorBlock, editorKey, focusKey } from '@/inter';
-import './editor.scss';
+import './Editor.scss';
 import { useMenuDrag } from './useMenuDrag';
 import { useFocus } from './useFocus';
 import { useBlockDrag } from './useBlockDrag';
@@ -159,7 +160,9 @@ export default defineComponent({
               </div>
             </div>
           </div>
-          <div class="editor-right">属性控制栏</div>
+          <div class="editor-right">
+            <EditorOperator block={lastSelectedBlock.value}></EditorOperator>
+          </div>
         </div>
       ) : (
         <>

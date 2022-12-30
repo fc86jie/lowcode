@@ -2,8 +2,8 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 19:36:06
- * @FilePath: \src\packages\editor-block.tsx
+ * @LastEditTime: 2022-12-29 18:43:14
+ * @FilePath: \src\packages\EditorBlock.tsx
  * @Description:
  */
 
@@ -12,7 +12,7 @@ import { $dropdown, DropdownItem } from '@/components/Dropdown';
 import { Bottom, Delete, Promotion, Top, Upload } from '@element-plus/icons-vue';
 import { computed, defineComponent, inject, onMounted, PropType, ref } from 'vue';
 import { IEditorBlock, IEditorConfig, configKey } from '../inter';
-import './editor-block.scss';
+import './EditorBlock.scss';
 import { useCommand } from './useCommand';
 
 export default defineComponent({
@@ -98,7 +98,10 @@ export default defineComponent({
 
     return () => {
       const component = config.componentMap[props.block.key];
-      const renderComponent = component.render();
+      const renderComponent = component.render({
+        props: props.block.props,
+      });
+
       return (
         <div
           class="editor-block"

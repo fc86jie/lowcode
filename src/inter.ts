@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 20:14:01
+ * @LastEditTime: 2022-12-29 18:54:01
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -19,34 +19,58 @@ export interface IEditorBlock {
   focus?: boolean;
   width?: number;
   height?: number;
+  props: {
+    text?: string;
+    color?: string;
+    size?: '' | 'large' | 'small' | 'default';
+    type?: '' | 'text' | 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'info';
+  };
+}
+
+export interface IEditorContainer {
+  width: number;
+  height: number;
 }
 
 // 编辑器配置文件接口定义
 export interface IEditor {
-  container: {
-    width: number;
-    height: number;
-  };
+  container: IEditorContainer;
   blocks: Array<IEditorBlock>;
 }
 
 // 配置文件
 
+export interface IOption {
+  label: string;
+  value: string | number;
+}
+
 export interface IComponent {
   key: string;
   label: string;
   preview: () => JSX.Element | string;
-  render: () => JSX.Element | string;
+  render: (data: {
+    props: {
+      text?: string;
+      type?: '' | 'text' | 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'info';
+      color?: string;
+      size?: '' | 'large' | 'small' | 'default';
+    };
+  }) => JSX.Element | string;
   props: {
     text?: {
       type: 'input';
       label: string;
     };
-    type?: {};
+    type?: {
+      type: 'select';
+      label: string;
+      options: Array<IOption>;
+    };
     size?: {
       type: 'select';
       label: string;
-      options: Array<{ label: string; value: string }>;
+      options: Array<IOption>;
     };
     color?: {
       type: 'color';

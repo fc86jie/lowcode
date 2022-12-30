@@ -3,58 +3,60 @@ import deepcopy from 'deepcopy';
 import { IEditor, editorKey, IChangeEditorData, IEditorBlock, focusKey, IFocusData } from '@/inter';
 import { emitter } from './events';
 
-export function useCommand() {
-  interface ICommand {
-    name: string;
-    pushQueue?: boolean; // 是否要放入队列中
-    keyboard?: string; // 快捷键
-    init?: () => () => void; // 初始化
-    execute: (...data: any) => { redo: () => void; undo?: () => void };
-    before?: null | object;
-  }
+interface ICommand {
+  name: string;
+  pushQueue?: boolean; // 是否要放入队列中
+  keyboard?: string; // 快捷键
+  init?: () => () => void; // 初始化
+  execute: (...data: any) => { redo: () => void; undo?: () => void };
+  before?: null | object;
+}
 
-  interface IState {
-    current: number;
-    queue: Array<{ redo: () => void; undo: () => void }>;
-    commands: {
-      [key: string]: (...rest: any[]) => void;
-    };
-    commandList: Array<ICommand>;
-    destroyList: Array<() => void>;
-  }
-
-  const state: IState = {
-    current: -1, // 前进后退指针
-    queue: [], // 所有操作命令
-    commands: {}, // 命令和执行功能映射
-    commandList: [], // 存放所有命令
-    destroyList: [], // 销毁事件
+interface IState {
+  current: number;
+  queue: Array<{ redo: () => void; undo: () => void }>;
+  commands: {
+    [key: string]: (...rest: any[]) => void;
   };
+  commandList: Array<ICommand>;
+  destroyList: Array<() => void>;
+}
 
-  const registry = (command: ICommand) => {
-    state.commandList.push(command);
-    state.commands[command.name] = (...args: any[]) => {
-      const { redo, undo } = command.execute(...args);
-      redo();
-      if (!command.pushQueue) {
-        return;
-      }
-      let { queue, current } = state;
-      // 在放置的过程中可能有撤销操作，根据当前最新的current值来计算新的队列
-      // 组件1 -》组件2-》组件3-》撤销-》撤销-》组件4 === 组件1=》组件4
-      if (queue.length > 0) {
-        queue = queue.slice(0, current + 1);
-        state.queue = queue;
-      }
-      // 保存指令的前进、后退
-      queue.push({
-        redo,
-        undo: undo as () => void,
-      });
-      state.current = current + 1;
-    };
+const state: IState = {
+  current: -1, // 前进后退指针
+  queue: [], // 所有操作命令
+  commands: {}, // 命令和执行功能映射
+  commandList: [], // 存放所有命令
+  destroyList: [], // 销毁事件
+};
+
+const registry = (command: ICommand) => {
+  state.commandList.push(command);
+  state.commands[command.name] = (...args: any[]) => {
+    const { redo, undo } = command.execute(...args);
+    redo();
+    if (!command.pushQueue) {
+      return;
+    }
+
+    let { queue, current } = state;
+    // 在放置的过程中可能有撤销操作，根据当前最新的current值来计算新的队列
+    // 组件1 -》组件2-》组件3-》撤销-》撤销-》组件4 === 组件1=》组件4
+    if (queue.length > 0) {
+      queue = queue.slice(0, current + 1);
+      state.queue = queue;
+    }
+    // 保存指令的前进、后退
+    queue.push({
+      redo,
+      undo: undo as () => void,
+    });
+
+    state.current = current + 1;
   };
+};
 
+function init() {
   let { getData, setBlockData, setData } = inject(editorKey) as IChangeEditorData;
   let { getFocusData } = inject(focusKey) as IFocusData;
 
@@ -306,6 +308,15 @@ export function useCommand() {
   onUnmounted(() => {
     state.destroyList.forEach(fn => fn && fn());
   });
+}
+
+// 有多个地方引用了useCommand，改为单例模式
+let isInit = false;
+export function useCommand() {
+  if (!isInit) {
+    init();
+    isInit = true;
+  }
 
   return state;
 }

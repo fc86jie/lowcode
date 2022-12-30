@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 20:13:17
+ * @LastEditTime: 2022-12-29 19:20:48
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
@@ -29,7 +29,16 @@ editorConfig.registry({
   key: 'text',
   label: '文本',
   preview: () => '文本预览',
-  render: () => '文本渲染',
+  render: ({ props }) => (
+    <span
+      style={{
+        color: props.color,
+        fontSize: props.size,
+      }}
+    >
+      {props.text || '文本渲染'}
+    </span>
+  ),
   props: {
     text: {
       type: 'input',
@@ -64,7 +73,11 @@ editorConfig.registry({
   key: 'button',
   label: '按钮',
   preview: () => <ElButton>按钮预览</ElButton>,
-  render: () => <ElButton>按钮渲染</ElButton>,
+  render: ({ props }) => (
+    <ElButton type={props.type} size={props.size}>
+      {props.text || '按钮渲染'}
+    </ElButton>
+  ),
   props: {
     text: {
       type: 'input',
@@ -91,8 +104,8 @@ editorConfig.registry({
           value: 'danger',
         },
         {
-          label: '文本',
-          value: 'text',
+          label: '默认',
+          value: 'default',
         },
       ],
     },
@@ -101,20 +114,16 @@ editorConfig.registry({
       label: '按钮尺寸',
       options: [
         {
+          label: '大',
+          value: 'large',
+        },
+        {
           label: '默认',
           value: '',
         },
         {
-          label: '中等',
-          value: 'medium',
-        },
-        {
           label: '小',
           value: 'small',
-        },
-        {
-          label: '极小',
-          value: 'min',
         },
       ],
     },

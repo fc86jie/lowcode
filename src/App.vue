@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { provide, ref } from 'vue';
-import Editor from '@/packages/editor';
+import Editor from '@/packages/Editor';
 import data from './data.json';
 import { editorConfig } from '@/utils/editor-config';
 import { configKey } from './inter';
