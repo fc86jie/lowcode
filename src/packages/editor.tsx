@@ -2,8 +2,8 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-29 12:07:25
- * @FilePath: \src\packages\editor.tsx
+ * @LastEditTime: 2022-12-30 22:01:24
+ * @FilePath: \src\packages\Editor.tsx
  * @Description:
  */
 
@@ -23,6 +23,10 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Object as PropType<IEditor>,
+      required: true,
+    },
+    formData: {
+      type: Object as PropType<{ username: string; password: string }>,
       required: true,
     },
   },
@@ -150,6 +154,7 @@ export default defineComponent({
                       onAlignCenter={data => onAlignCenter(data, index)}
                       onSetStyle={data => onSetStyle(data, index)}
                       onMousedown={(e: MouseEvent) => blockMousedown(e, block, index)}
+                      formData={props.formData}
                     ></EditorBlock>
                   ))}
                   {/* 横向辅助线 */}
@@ -168,7 +173,7 @@ export default defineComponent({
         <>
           <div class="editor-container-canvas__content" style={containerStyle.value}>
             {data.value.blocks.map((block, index) => (
-              <EditorBlock class="editor-block-preview" block={block}></EditorBlock>
+              <EditorBlock class="editor-block-preview" block={block} formData={props.formData}></EditorBlock>
             ))}
           </div>
           <div>

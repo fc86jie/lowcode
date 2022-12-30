@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-29 19:20:48
+ * @LastEditTime: 2022-12-30 21:28:21
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
@@ -33,7 +33,7 @@ editorConfig.registry({
     <span
       style={{
         color: props.color,
-        fontSize: props.size,
+        fontSize: props.fontSize,
       }}
     >
       {props.text || '文本渲染'}
@@ -48,7 +48,7 @@ editorConfig.registry({
       type: 'color',
       label: '字体颜色',
     },
-    size: {
+    fontSize: {
       type: 'select',
       label: '字体大小',
       options: [
@@ -134,6 +134,9 @@ editorConfig.registry({
   key: 'input',
   label: '输入框',
   preview: () => <ElInput placeholder="输入框预览" />,
-  render: () => <ElInput placeholder="输入框渲染" />,
+  render: ({ model }) => <ElInput placeholder="输入框渲染" {...model.default} />,
   props: {},
+  model: {
+    default: '绑定字段',
+  },
 });

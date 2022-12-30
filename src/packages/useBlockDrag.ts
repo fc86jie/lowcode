@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 20:14:00
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-24 23:29:31
+ * @LastEditTime: 2022-12-30 12:04:10
  * @FilePath: \src\packages\useBlockDrag.ts
  * @Description:
  */
@@ -17,7 +17,7 @@ export function useBlockDrag(
     focus: IEditorBlock[];
     unFocus: IEditorBlock[];
   }>,
-  lastSelectedBlock: ComputedRef<IEditorBlock | null>,
+  lastSelectedBlock: ComputedRef<IEditorBlock | undefined>,
   data: WritableComputedRef<IEditor>
 ) {
   type dragStateType = {

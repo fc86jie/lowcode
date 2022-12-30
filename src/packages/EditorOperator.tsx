@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-29 12:04:50
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-29 19:18:02
+ * @LastEditTime: 2022-12-30 20:38:11
  * @FilePath: \src\packages\EditorOperator.tsx
  * @Description:
  */
@@ -106,6 +106,19 @@ export default defineComponent({
                       </ElSelect>
                     ),
                   }[propConfig.type]()}
+                </ElFormItem>
+              );
+            })
+          );
+        }
+
+        if (component && component.model) {
+          content.push(
+            Object.entries(component.model).map(([modelName, label]) => {
+              return (
+                <ElFormItem label={label}>
+                  {/* model['default'] = 'username' */}
+                  <ElInput v-model={(state.editorData as IEditorBlock).model[modelName]}></ElInput>
                 </ElFormItem>
               );
             })

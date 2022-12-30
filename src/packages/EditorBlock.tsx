@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-29 18:43:14
+ * @LastEditTime: 2022-12-30 21:27:39
  * @FilePath: \src\packages\EditorBlock.tsx
  * @Description:
  */
@@ -19,6 +19,10 @@ export default defineComponent({
   props: {
     block: {
       type: Object as PropType<IEditorBlock>,
+      required: true,
+    },
+    formData: {
+      type: Object,
       required: true,
     },
   },
@@ -100,6 +104,14 @@ export default defineComponent({
       const component = config.componentMap[props.block.key];
       const renderComponent = component.render({
         props: props.block.props,
+        model: Object.keys(component.model || {}).reduce((map: { [key: string]: Object }, modelName) => {
+          let propName = (props.block.model as any)[modelName];
+          map[modelName] = {
+            modelValue: props.formData[propName],
+            'onUpdate:modelValue': (v: string) => (props.formData[propName] = v),
+          };
+          return map;
+        }, {}),
       });
 
       return (

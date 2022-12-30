@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-17 23:37:55
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-29 17:59:18
+ * @LastEditTime: 2022-12-30 20:26:03
  * @FilePath: \src\packages\useMenuDrag.ts
  * @Description: 菜单拖拽
  */
@@ -39,6 +39,7 @@ export function useMenuDrag(data: WritableComputedRef<IEditor>, containerRef: Re
           key: (curComp as IComponent).key,
           alignCenter: true,
           props: {},
+          model: {},
         },
       ],
     };

@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-18 14:37:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 19:39:02
+ * @LastEditTime: 2022-12-30 12:03:44
  * @FilePath: \src\packages\useFocus.ts
  * @Description: 获取被选中的block
  */
@@ -21,7 +21,7 @@ export function useFocus(
   let lastSelectedBlock = computed(() => {
     let list = selectedIndex.value;
     let len = list.length;
-    return len > 0 ? data.value.blocks[list[len - 1]] : null;
+    return len > 0 ? data.value.blocks[list[len - 1]] : undefined;
   });
   // 清除所有焦点
   const clearBlockFocus = () => {
