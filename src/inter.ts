@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-30 21:34:43
+ * @LastEditTime: 2023-01-01 20:06:54
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -27,7 +27,7 @@ export interface IEditorBlock {
     type?: '' | 'text' | 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'info';
   };
   model?: {
-    [key: string]: Object;
+    [key: string]: string;
   };
 }
 
@@ -62,7 +62,10 @@ export interface IComponent {
       size?: '' | 'large' | 'small' | 'default';
     };
     model: {
-      [key: string]: Object;
+      [key: string]: {
+        modelValue: number | string;
+        'onUpdate:modelValue': (v: string | number) => void;
+      };
     };
   }) => JSX.Element | string;
   props: {
@@ -91,7 +94,7 @@ export interface IComponent {
     };
   };
   model?: {
-    [key: string]: Object;
+    [key: string]: string;
   };
 }
 export interface IEditorConfig {

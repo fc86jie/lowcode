@@ -12,6 +12,8 @@ const state = ref<IEditor>(data as IEditor);
 const formData = ref({
   username: '放糖的茶',
   password: '123456',
+  start: 10,
+  end: 100,
 });
 </script>
 

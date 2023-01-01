@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 19:45:31
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-30 22:01:24
+ * @LastEditTime: 2023-01-01 20:15:40
  * @FilePath: \src\packages\Editor.tsx
  * @Description:
  */
@@ -128,7 +128,7 @@ export default defineComponent({
             {config.componentList.map(item => (
               <div draggable class="editor-left-item" onDragstart={e => dragStart(e, item)} onDragend={dragEnd}>
                 <span>{item.label}</span>
-                <div>{item.preview()}</div>
+                <div class="editor-left-item-preview">{item.preview()}</div>
               </div>
             ))}
           </div>

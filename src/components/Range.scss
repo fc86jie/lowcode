@@ -1,0 +1,9 @@
+.range {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .separator {
+    display: inline-block;
+    margin: 0 4px;
+  }
+}

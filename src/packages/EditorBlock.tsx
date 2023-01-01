@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-30 21:27:39
+ * @LastEditTime: 2023-01-01 20:09:15
  * @FilePath: \src\packages\EditorBlock.tsx
  * @Description:
  */
@@ -104,14 +104,27 @@ export default defineComponent({
       const component = config.componentMap[props.block.key];
       const renderComponent = component.render({
         props: props.block.props,
-        model: Object.keys(component.model || {}).reduce((map: { [key: string]: Object }, modelName) => {
-          let propName = (props.block.model as any)[modelName];
-          map[modelName] = {
-            modelValue: props.formData[propName],
-            'onUpdate:modelValue': (v: string) => (props.formData[propName] = v),
-          };
-          return map;
-        }, {}),
+        model: Object.keys(component.model || {}).reduce(
+          (
+            map: {
+              [key: string]: {
+                modelValue: string | number;
+                'onUpdate:modelValue': (v: string | number) => void;
+              };
+            },
+            modelName
+          ) => {
+            let propName = (props.block.model as { [key: string]: string })[modelName];
+            map[modelName] = {
+              modelValue: props.formData[propName],
+              'onUpdate:modelValue': (v: string | number) => {
+                props.formData[propName] = v;
+              },
+            };
+            return map;
+          },
+          {}
+        ),
       });
 
       return (

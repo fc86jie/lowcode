@@ -2,13 +2,14 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-30 21:28:21
+ * @LastEditTime: 2023-01-01 19:57:40
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
 
 import { IComponent, IEditorConfig } from '@/inter';
 import { ElButton, ElInput } from 'element-plus';
+import Range from '@/components/Range';
 
 function createEditorConfig(): IEditorConfig {
   const componentList: Array<IComponent> = [];
@@ -138,5 +139,26 @@ editorConfig.registry({
   props: {},
   model: {
     default: '绑定字段',
+  },
+});
+
+editorConfig.registry({
+  key: 'range',
+  label: '范围选择器',
+  preview: () => <Range></Range>,
+  render: ({ model }) => (
+    <Range
+      {...{
+        start: model.start.modelValue as number,
+        'onUpdate:start': model.start['onUpdate:modelValue'],
+        end: model.end.modelValue as number,
+        'onUpdate:end': model.end['onUpdate:modelValue'],
+      }}
+    ></Range>
+  ),
+  props: {},
+  model: {
+    start: '开始范围字段',
+    end: '结束范围字段',
   },
 });
