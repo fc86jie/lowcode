@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-14 20:23:05
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2023-01-01 20:06:54
+ * @LastEditTime: 2023-01-02 18:08:01
  * @FilePath: \src\inter.ts
  * @Description:
  */
@@ -25,6 +25,7 @@ export interface IEditorBlock {
     fontSize?: string;
     size?: '' | 'large' | 'small' | 'default';
     type?: '' | 'text' | 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'info';
+    options?: Array<IOption>;
   };
   model?: {
     [key: string]: string;
@@ -55,6 +56,7 @@ export interface IComponent {
   preview: () => JSX.Element | string;
   render: (data: {
     props: {
+      options: never[];
       text?: string;
       type?: '' | 'text' | 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'info';
       color?: string;
@@ -91,6 +93,17 @@ export interface IComponent {
     color?: {
       type: 'color';
       label: string;
+    };
+    options?: {
+      type: 'table';
+      label: string;
+      table: {
+        options: Array<{
+          label: string;
+          value: string;
+        }>;
+        key: string;
+      };
     };
   };
   model?: {

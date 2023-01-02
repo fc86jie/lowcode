@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-27 12:05:54
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2022-12-28 10:45:00
+ * @LastEditTime: 2023-01-02 11:05:35
  * @FilePath: \src\components\Dialog.tsx
  * @Description:
  */
@@ -17,7 +17,7 @@ interface IOptions {
   onConfirm?: (key: string) => void;
 }
 
-const dialogComponent = defineComponent({
+const DialogComponent = defineComponent({
   props: {
     options: {
       type: Object as PropType<IOptions>,
@@ -71,7 +71,7 @@ export function $dialog(options: IOptions) {
   let el = document.createElement('div');
   // 没有创建新的，有复用
   if (!vn) {
-    vn = createVNode(dialogComponent, { options });
+    vn = createVNode(DialogComponent, { options });
     render(vn, el);
     document.body.appendChild(el);
   }

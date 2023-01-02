@@ -2,13 +2,13 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2023-01-01 19:57:40
+ * @LastEditTime: 2023-01-02 20:16:12
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
 
-import { IComponent, IEditorConfig } from '@/inter';
-import { ElButton, ElInput } from 'element-plus';
+import { IComponent, IEditorConfig, IOption } from '@/inter';
+import { ElButton, ElInput, ElOption, ElSelect } from 'element-plus';
 import Range from '@/components/Range';
 
 function createEditorConfig(): IEditorConfig {
@@ -160,5 +160,40 @@ editorConfig.registry({
   model: {
     start: '开始范围字段',
     end: '结束范围字段',
+  },
+});
+
+editorConfig.registry({
+  key: 'select',
+  label: '下拉框',
+  preview: () => <ElSelect></ElSelect>,
+  render: ({ props, model }) => (
+    <ElSelect {...model.default}>
+      {(props.options || []).map((item: IOption, index) => (
+        <ElOption label={item.label} value={item.value} key={index}></ElOption>
+      ))}
+    </ElSelect>
+  ),
+  props: {
+    options: {
+      type: 'table',
+      label: '下拉选项',
+      table: {
+        options: [
+          {
+            label: '显示值',
+            value: 'label',
+          },
+          {
+            label: '绑定值',
+            value: 'value',
+          },
+        ],
+        key: 'label', // 显示给用户的值是label值
+      },
+    },
+  },
+  model: {
+    default: '绑定字段',
   },
 });

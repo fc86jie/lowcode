@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-29 12:04:50
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2023-01-01 19:59:19
+ * @LastEditTime: 2023-01-02 10:52:32
  * @FilePath: \src\packages\EditorOperator.tsx
  * @Description:
  */
@@ -20,6 +20,7 @@ import {
 } from '@/inter';
 import deepcopy from 'deepcopy';
 import { useCommand } from './useCommand';
+import TableEditor from './TableEditor';
 
 export default defineComponent({
   props: {
@@ -78,7 +79,7 @@ export default defineComponent({
       } else {
         let component = config.componentMap[props.block.key];
         if (component && component.props) {
-          type TPropName = 'text' | 'color' | 'size' | 'type';
+          type TPropName = 'text' | 'color' | 'size' | 'type' | 'fontSize' | 'options';
           content.push(
             Object.entries(component.props).map(([propName, propConfig]) => {
               return (
@@ -104,6 +105,12 @@ export default defineComponent({
                           <ElOption label={label} value={value}></ElOption>
                         ))}
                       </ElSelect>
+                    ),
+                    table: () => (
+                      <TableEditor
+                        propConfig={propConfig}
+                        v-model={(state.editorData as IEditorBlock).props[propName as TPropName]}
+                      ></TableEditor>
                     ),
                   }[propConfig.type]()}
                 </ElFormItem>

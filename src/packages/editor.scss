@@ -33,7 +33,7 @@
       &::after {
         content: '';
         position: absolute;
-        z-index: 999999;
+        z-index: 999;
         left: 0;
         right: 0;
         top: 0;
@@ -78,14 +78,14 @@
           position: absolute;
           top: 0;
           bottom: 0;
-          z-index: 999999;
+          z-index: 999;
           border-left: dashed 1px red;
         }
         .line-x {
           position: absolute;
           left: 0;
           right: 0;
-          z-index: 999999;
+          z-index: 999;
           border-top: dashed 1px red;
         }
       }
