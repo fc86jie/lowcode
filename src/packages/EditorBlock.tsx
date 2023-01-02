@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 10:10:16
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2023-01-01 20:09:15
+ * @LastEditTime: 2023-01-02 21:28:10
  * @FilePath: \src\packages\EditorBlock.tsx
  * @Description:
  */
@@ -12,6 +12,7 @@ import { $dropdown, DropdownItem } from '@/components/Dropdown';
 import { Bottom, Delete, Promotion, Top, Upload } from '@element-plus/icons-vue';
 import { computed, defineComponent, inject, onMounted, PropType, ref } from 'vue';
 import { IEditorBlock, IEditorConfig, configKey } from '../inter';
+import BlockResize from './BlockResize';
 import './EditorBlock.scss';
 import { useCommand } from './useCommand';
 
@@ -103,6 +104,7 @@ export default defineComponent({
     return () => {
       const component = config.componentMap[props.block.key];
       const renderComponent = component.render({
+        size: props.block.hasResize ? { width: props.block.width, height: props.block.height } : {},
         props: props.block.props,
         model: Object.keys(component.model || {}).reduce(
           (
@@ -127,6 +129,8 @@ export default defineComponent({
         ),
       });
 
+      const { width, height } = component.resize || {};
+
       return (
         <div
           class="editor-block"
@@ -135,6 +139,9 @@ export default defineComponent({
           onContextmenu={(e: MouseEvent) => onContextMenuBlock(e)}
         >
           {renderComponent}
+          {props.block.focus && (width || height) && (
+            <BlockResize block={props.block} component={component}></BlockResize>
+          )}
         </div>
       );
     };

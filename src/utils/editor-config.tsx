@@ -2,7 +2,7 @@
  * @Author: wangrenjie86@gmail.com
  * @Date: 2022-12-16 14:19:49
  * @LastEditors: wangrenjie86@gmail.com
- * @LastEditTime: 2023-01-02 20:16:12
+ * @LastEditTime: 2023-01-02 22:01:46
  * @FilePath: \src\utils\editor-config.tsx
  * @Description:
  */
@@ -73,9 +73,20 @@ editorConfig.registry({
 editorConfig.registry({
   key: 'button',
   label: '按钮',
+  resize: {
+    width: true,
+    height: true,
+  },
   preview: () => <ElButton>按钮预览</ElButton>,
-  render: ({ props }) => (
-    <ElButton type={props.type} size={props.size}>
+  render: ({ props, size = {} }) => (
+    <ElButton
+      type={props.type}
+      size={props.size}
+      style={{
+        width: `${size.width}px`,
+        height: `${size.height}px`,
+      }}
+    >
       {props.text || '按钮渲染'}
     </ElButton>
   ),
@@ -134,8 +145,13 @@ editorConfig.registry({
 editorConfig.registry({
   key: 'input',
   label: '输入框',
+  resize: {
+    width: true,
+  },
   preview: () => <ElInput placeholder="输入框预览" />,
-  render: ({ model }) => <ElInput placeholder="输入框渲染" {...model.default} />,
+  render: ({ model, size = {} }) => (
+    <ElInput placeholder="输入框渲染" {...model.default} style={{ width: `${size.width}px` }} />
+  ),
   props: {},
   model: {
     default: '绑定字段',

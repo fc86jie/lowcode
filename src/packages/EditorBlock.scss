@@ -15,4 +15,9 @@
   &.editor-block-preview::after {
     display: none;
   }
+  // 拖拽时候动画取消掉
+  .el-button,
+  .el-input {
+    transition: none;
+  }
 }
